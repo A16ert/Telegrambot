@@ -21,7 +21,24 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Model\db\SQLighter.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Services\BaseService.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Services\StudentsService.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Telegrambot.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="Model\db\" />
+    <Folder Include="Model\Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\db\lessons_db.db" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
