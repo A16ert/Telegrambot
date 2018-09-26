@@ -27,10 +27,16 @@
     <Compile Include="Helpers\Config.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="homeWorkMethods.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\db\SQLighter.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Services\BaseService.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Services\HomeWorkService.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Services\StudentsService.py">
