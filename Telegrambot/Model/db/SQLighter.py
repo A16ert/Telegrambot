@@ -17,6 +17,13 @@ class SQLighter:
     def execute_select(self, sql):
         with self.connection:
             return self.cursor.execute(sql).fetchall()
+        pass
+
+    def execute_insert(self, sql):
+        with self.connection:
+            self.cursor.execute(sql)
+            pass
+        pass
 
     def close(self):
         """ Закрываем текущее соединение с БД """
