@@ -21,6 +21,12 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Commands.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\Config.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\db\SQLighter.py">
       <SubType>Code</SubType>
     </Compile>
@@ -36,6 +42,7 @@
     <Folder Include="Model\" />
     <Folder Include="Model\db\" />
     <Folder Include="Model\Services\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Model\db\lessons_db.db" />
