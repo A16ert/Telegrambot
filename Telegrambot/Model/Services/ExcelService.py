@@ -1,5 +1,6 @@
-from ..db.SQLighter import SQLighter
 from .BaseService import BaseService
+import xlwt, xlrd, xlutils
+
 
 class ExcelService(BaseService):
     """description of class"""
@@ -10,6 +11,51 @@ class ExcelService(BaseService):
 
     def get_all_home_works(self):
 
-        pass
+        sql = 'SELECT * FROM homeworks;'
+        try:
+            hw = self.db.execute_select(sql)
+        except Exception as ex:
+            return 'Произошла ошибка: ' + str(ex)
+            print(ex)
+            pass
+            
+        if len(hw) < 1: return 'нет домашних работ'
 
+        font0 = xlwt.Font()
+        font0.name = 'Times New Roman'
+        font0.colour_index = 2
+        font0.bold = True
+
+        style0 = xlwt.XFStyle()
+        style0.font = font0
+
+        style1 = xlwt.XFStyle()
+        style1.num_format_str = 'DD-MM-YY'
+
+        wb = xlwt.Workbook()
+        ws = wb.add_sheet('HOMEWORKS')
+
+        
+        ws.write(0, 0, 'Id', style0)
+        ws.write(0, 1, 'Name', style0)
+        ws.write(0, 2, 'Description', style0)
+        i = 1
+        for home in hw:
+            ws.write(i, 0, home[0], style0)
+            ws.write(i, 1, home[1], style0)
+            ws.write(i, 2, home[2], style0)
+            i += 1
+            pass
+        try:
+            wb.save('allhomeworks.xls')
+        except Exception as ex:
+            return 'Произошла ошибка: ' + str(ex)
+            print(ex)
+            pass
+        return 'ok'
+    pass
+
+
+        
+     
 
