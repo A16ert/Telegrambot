@@ -14,9 +14,9 @@ class AdminService(BaseService):
         if len(user) > 0: return True
         else: return False
         pass
-
+    # проверка на админа
     def is_admin(self, id):
-        user = self.db.execute_select('SELECT * FROM students WHERE number=\'0\';')
+        user = self.db.execute_select('SELECT * FROM students WHERE userId={};'.format(id))
 
         if len(user) > 0: return True
         else: return False
