@@ -1,4 +1,5 @@
 from Model.Services.StudentsService import StudentsService
+from Model.Services.AdminService import AdminService
 import telebot
 from Helpers import Config
 from Helpers import Commands
@@ -26,12 +27,17 @@ def command_handler(message):
                 bot.send_message(user_id, commands)
                 pass
 
-            if command == 'help':
+            elif command == 'help':
                 help_command(bot, user_id, text)
 
-            if command == 'signup':
+            elif command == 'signup':
                 signup_student_command(bot, user_id, text)
-            pass
+
+            elif command == 'adminreg':
+                admin_reg_command(bot, user_id, text)
+
+            elif command == 'getstudents':
+                get_students_command(bot, user_id)
 
     except Exception as ex:
         bot.send_message(user_id, 'Произошла ошибка: ' + str(ex))
@@ -78,6 +84,47 @@ def signup_student_command(bot, userId, text):
     bot.send_message(userId, messageText)
 
     studentsService.close()
+
+def admin_reg_command(bot, user_id, text):
+
+    adminService = AdminService()
+
+    if text == "": return "вы не ввели пароль"
+
+    if text == "12345":
+        messageText = adminService.add_admin(user_id)
+
+    bot.send_message(userId, messageText)
+
+    adminService.close()
+    pass
+
+def get_students_command(bot, user_id):
+
+    studnetService = StudentsService()
+    students = studnetService.get_all_students()
+    studnetService.close()
+
+    is_admin = False
+    if i in students:
+        if i[0] == '0':
+            if i[4] == user_id: is_admin = True
+
+    if not is_admin:
+        bot.send_message(user_id, "вы не являетесь администратором")
+        return
+    
+
+    if len(students) == 0:
+        bot.send_message(user_id, "на данном курсе нет студентов" )
+        return
+    messageText = ""
+
+    for i in students:
+        messageText += i[0] +" " + i[1] + " " +i[2] +" " + i[3] + "\n"
+
+    bot.send_message(user_id, messageText)
+
 
 
 

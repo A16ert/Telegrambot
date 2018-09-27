@@ -33,6 +33,9 @@
     <Compile Include="Model\db\SQLighter.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\Services\AdminService.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\Services\BaseService.py">
       <SubType>Code</SubType>
     </Compile>

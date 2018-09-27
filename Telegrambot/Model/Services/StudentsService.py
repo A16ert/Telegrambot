@@ -23,6 +23,13 @@ class StudentsService(BaseService):
 
          return None
 
+    def get_all_students(self):
+        sql = 'SELECT number, last_name, first_name, middle_name FROM students;'.format(id)
+        user = self.db.execute_select(sql)
+        if len(user) > 0:  return user;
+
+        return None
+
     def get_student_by_userId(self, id):
          sql = 'SELECT * FROM students WHERE userId=\'{}\';'.format(id)
          user = self.db.execute_select(sql)
@@ -32,13 +39,6 @@ class StudentsService(BaseService):
 
     def is_student_recordered_userId(self, id):
         user = self.db.execute_select('SELECT * FROM students WHERE userId={};'.format(id))
-
-        if len(user) > 0: return True
-        else: return False
-        pass
-
-    def is_admin_recordered(self):
-        user = self.db.execute_select('SELECT * FROM students WHERE admin=1;')
 
         if len(user) > 0: return True
         else: return False
