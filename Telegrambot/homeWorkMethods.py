@@ -1,6 +1,6 @@
 from Model.Services.HomeWorkService import HomeWorkService
 from Model.Services.StudentsService import StudentsService
-
+from Model.Services.AdminService import AdminService
 
 def get_all_hws(bot, id):
     studentService= StudentsService()
@@ -17,7 +17,24 @@ def get_all_hws(bot, id):
     
 #text - name description через пробел
 def add_home_work(bot, user_id, text):
+    adminService= AdminService()
+    if not adminService.is_admin(user_id):
+         bot.send_message(id, "не админ")
+    adminService.close()
+    hlist = text.split()
 
-    pass
-
+    homeworkService = HomeWorkService()
+    message = homeworkService.add_hw(hlist[0], hlist[1])
+    homeworkService.close()
+    bot.send_message(id, message)
+def is_admins(bot, id):
+    adminService= AdminService()
+    if not adminService.is_admin_recordered(id):
+        bot.send_message(id, "Админ не записан")
+    if not adminService.is_admin(id):
+        bot.send_message(id, "Не прошел проверку на админа")
+    bot.send_message(id, "Админ")
+    adminService.close()
+    
+add_home_work(None,0,"ffdsfdsf ВПВПВПЫВПСМС")
 #проверка на админа

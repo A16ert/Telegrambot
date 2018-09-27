@@ -41,4 +41,3 @@ class AdminService(BaseService):
 
         return "вы успешно зарегестрированы"
 
-    def add_student(self, )
