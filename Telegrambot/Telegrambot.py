@@ -43,7 +43,6 @@ def command_handler(message):
         bot.send_message(user_id, 'Произошла ошибка: ' + str(ex))
         print(ex)
         pass
-
     pass
 
 def help_command(bot, userId, text):
@@ -89,12 +88,14 @@ def admin_reg_command(bot, user_id, text):
 
     adminService = AdminService()
 
-    if text == "": return "вы не ввели пароль"
+    if text == "": 
+        bot.send_message(user_id, "Вы не ввели пароль")
+        return
 
     if text == "12345":
         messageText = adminService.add_admin(user_id)
 
-    bot.send_message(userId, messageText)
+    bot.send_message(user_id, messageText)
 
     adminService.close()
     pass

@@ -24,7 +24,7 @@ class AdminService(BaseService):
 
     def add_admin(self, user_id):
         select_sql = 'SELECT * FROM students WHERE userId={};'.format(user_id)
-        insert_sql = ('INSERT INTO students(number, last_name, first_name, middle_name, userId) VALUES (\'0\', \'\', \'\', \'\', {});'
+        insert_sql = ('INSERT INTO students(number, last_name, first_name, middle_name, userId) VALUES (\'0\', \'admin\', \'admin\', \'admin\', {});'
                         .format(user_id))
         if self.is_admin_recordered():
             return "администратор уже существует"
@@ -40,5 +40,3 @@ class AdminService(BaseService):
             pass
 
         return "вы успешно зарегестрированы"
-
-    def add_student(self, )
