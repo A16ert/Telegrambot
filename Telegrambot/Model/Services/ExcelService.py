@@ -84,15 +84,15 @@ class ExcelService(BaseService):
  
         ws.write(0, 0, 'Number', style0)
         ws.write(0, 1, 'Surname', style0)
-        ws.write(0, 1, 'Firsf Name', style0)
-        ws.write(0, 2, 'Middle Name', style0)
+        ws.write(0, 2, 'Firsf Name', style0)
+        ws.write(0, 3, 'Middle Name', style0)
   
         i = 1
         for stud in st:
-            ws.write(i, 0, st[0], style0)
-            ws.write(i, 1, st[1], style0)
-            ws.write(i, 2, st[2], style0)
-            ws.write(i, 3, st[3], style0)
+            ws.write(i, 0, stud[0], style0)
+            ws.write(i, 1, stud[1], style0)
+            ws.write(i, 2, stud[2], style0)
+            ws.write(i, 3, stud[3], style0)
             i += 1
             pass
         try:

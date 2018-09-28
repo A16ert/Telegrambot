@@ -1,10 +1,13 @@
 from Model.Services.StudentsService import StudentsService
 from Model.Services.AdminService import AdminService
 import telebot
+import ExcelMethods
+import homeWorkMethods
 from Helpers import Config
 from Helpers import Commands
 
 bot = telebot.TeleBot(Config.token)
+admin_command = ""
 
 @bot.message_handler(content_types=["text"], commands=['start', 'help','adminreg','adminunreg', 'signup', 'signout', 'default', 'loadratings', 'loadabsents',
                                'loadstudents', 'loadhws', 'getstudents', 'gethws', 'getratings', 'getabsents', 'addhw',
@@ -12,6 +15,7 @@ bot = telebot.TeleBot(Config.token)
                                "showhws", "showratings", "showabsents", 'getchats', 'getconfig', 'loadconfig', 'ask',
                                'channel', 'getask', 'answer', 'delask', 'analysis'])
 def command_handler(message):
+    global admin_command
     chat = message.chat
     user_id = str(chat.id)
     command = (message.text[1:]).split(' ')[0]
@@ -35,9 +39,20 @@ def command_handler(message):
 
             elif command == 'adminreg':
                 admin_reg_command(bot, user_id, text)
+            elif command == 'adminunreg':
+                admin_unreg_command(bot, user_id, text)
 
             elif command == 'getstudents':
-                get_students_command(bot, user_id)
+                admin_command = "getstudents"
+                bot.send_message(user_id, "excel или message ?(yes/not)")
+                #get_students_excel(bot, user_id)
+
+            elif command == 'allhws':
+                admin_command = 'allhws'
+                bot.send_message(user_id, "excel или message ?(yes/not)")
+
+            elif command == 'getstudents':
+                ExcelMethods.get_student_list(bot, user_id)
 
     except Exception as ex:
         bot.send_message(user_id, 'Произошла ошибка: ' + str(ex))
@@ -45,6 +60,30 @@ def command_handler(message):
         pass
     pass
 
+@bot.message_handler(content_types=["text"])
+def text_handler(message):
+    global admin_command
+    chat = message.chat
+    user_id = str(chat.id)
+    text = message.text
+    try:
+        if admin_command == '':
+            bot.send_message(user_id, "введите команду")
+        elif admin_command == 'getstudents':
+            if text == 'yes': get_students_excel(bot, user_id)
+            else: get_students(bot, user_id)
+
+        elif admin_command == 'allhws':
+            if text == 'yes': ExcelMethods.get_all_home_works(bot, user_id)
+            else: HomeWorksMethods.get_all_hws(bot, user_id)
+        admin_command = ""
+        pass
+    except Exception as ex:
+        bot.send_message(user_id, 'Произошла ошибка: ' + str(ex))
+        print(ex)
+        admin_command = ""
+        pass
+    pass
 def help_command(bot, userId, text):
 
    studentsService = StudentsService()
@@ -100,21 +139,20 @@ def admin_reg_command(bot, user_id, text):
     adminService.close()
     pass
 
-def get_students_command(bot, user_id):
+def get_students(bot, user_id):
 
     studnetService = StudentsService()
     students = studnetService.get_all_students()
     studnetService.close()
 
     is_admin = False
-    if i in students:
+    for i in students:
         if i[0] == '0':
             if i[4] == user_id: is_admin = True
 
     if not is_admin:
         bot.send_message(user_id, "вы не являетесь администратором")
         return
-    
 
     if len(students) == 0:
         bot.send_message(user_id, "на данном курсе нет студентов" )
@@ -125,6 +163,25 @@ def get_students_command(bot, user_id):
         messageText += i[0] +" " + i[1] + " " +i[2] +" " + i[3] + "\n"
 
     bot.send_message(user_id, messageText)
+
+def get_students_excel(bot, user_id):
+    ExcelMethods.get_student_list(bot, user_id)
+
+def admin_unreg_command(bot, user_id, text):
+    
+    adminService = AdminService()
+
+    if text == "": 
+        bot.send_message(user_id, "Вы не ввели пароль")
+        return
+    messageText = ""
+    if text == "12345":
+        messageText = adminService.delete_admin()
+
+    bot.send_message(user_id, messageText)
+
+    adminService.close()
+    pass
 
 
 

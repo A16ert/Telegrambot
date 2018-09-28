@@ -16,9 +16,7 @@ def get_all_home_works(bot, id):
         bot.send_document(id, doc)
     else: bot.send_message(id, message)
 
-    pass
-
-def get_student_list(bot, self):
+def get_student_list(bot, id):
         exService = ExcelService()
         adminService = AdminService()
 
@@ -32,7 +30,3 @@ def get_student_list(bot, self):
             doc = open('allStudents' + '.xls', 'rb')
             bot.send_document(id, doc)
         else: bot.send_message(id, message)
-
-        pass        
-
-        return None

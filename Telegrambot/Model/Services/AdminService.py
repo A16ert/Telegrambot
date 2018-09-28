@@ -40,3 +40,14 @@ class AdminService(BaseService):
             pass
 
         return "вы успешно зарегестрированы"
+
+    def delete_admin(self):
+        sql = 'DELETE FROM students WHERE number=\'0\''
+        try:
+            self.db.execute_insert(sql)
+        except Exception as ex:
+            return 'Произошла ошибка: ' + str(ex)
+            print(ex)
+            pass
+
+        return "администратор удалён"
