@@ -18,7 +18,7 @@ def get_all_home_works(bot, id):
 
     pass
 
-def get_student_list(bot, self):
+def get_all_students(bot, self):
         exService = ExcelService()
         adminService = AdminService()
 
@@ -36,3 +36,26 @@ def get_student_list(bot, self):
         pass        
 
         return None
+
+def get_absent_students(bot, self):
+        exService = ExcelService()
+        adminService = AdminService()
+
+        if not adminService.is_admin(id): 
+            bot.send_message(id, "вы не являетесь администратором")
+            return
+        adminService.close()
+        message = exService.get_all_students()
+        exService.close()
+        if message == "ok":
+            doc = open('absence' + '.xls', 'rb')
+            bot.send_document(id, doc)
+        else: bot.send_message(id, message)
+
+        pass        
+
+        return None
+
+#####################################################################################
+
+
