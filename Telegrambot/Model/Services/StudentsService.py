@@ -10,7 +10,7 @@ class StudentsService(BaseService):
 
     # записался ли студент на курс (return boolean)
     def is_student_recordered(self, id):
-         user = self.db.execute_select('SELECT * FROM students WHERE number={};'.format(id))
+         user = self.db.execute_select('SELECT * FROM students WHERE userId={};'.format(id))
 
          if len(user) > 0: return True
          else: return False
@@ -29,6 +29,17 @@ class StudentsService(BaseService):
         if len(user) > 0:  return user;
 
         return None
+
+    def delete_student(self, user_id):
+        sql = 'DELETE FROM students WHERE userId={}'.format(user_id)
+        try:
+            self.db.execute_insert(sql)
+        except Exception as ex:
+            return 'Произошла ошибка: ' + str(ex)
+            print(ex)
+            pass
+
+        return "вы удалены с курса"
 
     def get_student_by_userId(self, id):
          sql = 'SELECT * FROM students WHERE userId=\'{}\';'.format(id)

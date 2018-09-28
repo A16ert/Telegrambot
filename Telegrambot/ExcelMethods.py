@@ -3,12 +3,12 @@ from Model.Services.AdminService import AdminService
 
 def get_all_home_works(bot, id):
     exService = ExcelService()
-    adminService = AdminService()
+    studentService= StudentsService()
 
-    if not adminService.is_admin(id): 
-        bot.send_message(id, "вы не являетесь администратором")
+    if not studentService.is_student_recordered_userId(id):
+        bot.send_message(id, "Студент не записан")
         return
-    adminService.close()
+    studentService.close()
     message = exService.get_all_home_works()
     exService.close()
     if message == "ok":

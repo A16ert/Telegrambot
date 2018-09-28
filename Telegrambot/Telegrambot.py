@@ -9,11 +9,8 @@ from Helpers import Commands
 bot = telebot.TeleBot(Config.token)
 admin_command = ""
 
-@bot.message_handler(content_types=["text"], commands=['start', 'help','adminreg','adminunreg', 'signup', 'signout', 'default', 'loadratings', 'loadabsents',
-                               'loadstudents', 'loadhws', 'getstudents', 'gethws', 'getratings', 'getabsents', 'addhw',
-                               'delhw', "addstudent", "delstudent", 'hws', 'absents', "allhws", "showstudents",
-                               "showhws", "showratings", "showabsents", 'getchats', 'getconfig', 'loadconfig', 'ask',
-                               'channel', 'getask', 'answer', 'delask', 'analysis'])
+@bot.message_handler(content_types=["text"], commands=['start', 'help','adminreg','adminunreg', 'signup', 'signout', 'addhw',
+                              "allhws"])
 def command_handler(message):
     global admin_command
     chat = message.chat
@@ -36,7 +33,8 @@ def command_handler(message):
 
             elif command == 'signup':
                 signup_student_command(bot, user_id, text)
-
+            elif command == 'signout':
+                signout_student_command(bot, user_id, text)
             elif command == 'adminreg':
                 admin_reg_command(bot, user_id, text)
             elif command == 'adminunreg':
@@ -45,14 +43,13 @@ def command_handler(message):
             elif command == 'getstudents':
                 admin_command = "getstudents"
                 bot.send_message(user_id, "excel или message ?(yes/not)")
-                #get_students_excel(bot, user_id)
+            
+            elif command == 'addhw':
+                homeWorkMethods.add_home_work(bot, user_id, text)
 
             elif command == 'allhws':
                 admin_command = 'allhws'
                 bot.send_message(user_id, "excel или message ?(yes/not)")
-
-            elif command == 'getstudents':
-                ExcelMethods.get_student_list(bot, user_id)
 
     except Exception as ex:
         bot.send_message(user_id, 'Произошла ошибка: ' + str(ex))
@@ -75,7 +72,7 @@ def text_handler(message):
 
         elif admin_command == 'allhws':
             if text == 'yes': ExcelMethods.get_all_home_works(bot, user_id)
-            else: HomeWorksMethods.get_all_hws(bot, user_id)
+            else: homeWorkMethods.get_all_hws(bot, user_id)
         admin_command = ""
         pass
     except Exception as ex:
@@ -84,6 +81,9 @@ def text_handler(message):
         admin_command = ""
         pass
     pass
+
+
+
 def help_command(bot, userId, text):
 
    studentsService = StudentsService()
@@ -122,6 +122,19 @@ def signup_student_command(bot, userId, text):
     bot.send_message(userId, messageText)
 
     studentsService.close()
+
+def signout_student_command(bot, userId, text):
+
+    studentsService = StudentsService()
+
+    if not studentsService.is_student_recordered(userId):
+        bot.send_message(userId, "вы не записаны на курс")
+        return
+
+    messageText = studentsService.delete_student(userId)
+    studentsService.close()
+    bot.send_message(userId, messageText)
+    pass
 
 def admin_reg_command(bot, user_id, text):
 
