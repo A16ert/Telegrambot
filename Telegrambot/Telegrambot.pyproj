@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ExcelMethods.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Helpers\Commands.py">
       <SubType>Code</SubType>
     </Compile>
@@ -37,6 +40,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Services\BaseService.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Services\ExcelService.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Services\HomeWorkService.py">
